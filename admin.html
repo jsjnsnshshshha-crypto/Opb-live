@@ -1,1 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>OPB Live - Admin Portal</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    header {
+      background: #0f766e;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .welcome {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .stat h3 {
+      font-size: 28px;
+      color: #0f766e;
+      margin-bottom: 6px;
+    }
+
+    .stat p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+      color: #0f766e;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      background: #0f766e;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .danger {
+      background: #dc2626;
+    }
+
+    .secondary {
+      background: #475569;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f1f5f9;
+    }
+
+    .status {
+      color: #15803d;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px;
+      }
+
+      header h1 {
+        font-size: 21px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>OPB Live</h1>
+    <p>Administrator Portal</p>
+  </header>
+
+  <main class="container">
+
+    <div class="welcome">
+      <h2>Admin Dashboard</h2>
+      <p>Manage patients, doctors, receptionists and hospital operations.</p>
+    </div>
+
+    <div class="dashboard">
+
+      <div class="stat">
+        <h3>248</h3>
+        <p>Total Patients</p>
+      </div>
+
+      <div class="stat">
+        <h3>24</h3>
+        <p>Doctors</p>
+      </div>
+
+      <div class="stat">
+        <h3>12</h3>
+        <p>Receptionists</p>
+      </div>
+
+      <div class="stat">
+        <h3>18</h3>
+        <p>Appointments Today</p>
+      </div>
+
+    </div>
+
+    <section class="section">
+      <h2>Admin Controls</h2>
+
+      <div class="actions">
+        <button onclick="showMessage('Patient management opened')">
+          Manage Patients
+        </button>
+
+        <button onclick="showMessage('Doctor management opened')">
+          Manage Doctors
+        </button>
+
+        <button onclick="showMessage('Receptionist management opened')">
+          Manage Receptionists
+        </button>
+
+        <button onclick="showMessage('Appointments management opened')">
+          Manage Appointments
+        </button>
+
+        <button class="secondary" onclick="showMessage('Reports section opened')">
+          View Reports
+        </button>
+
+        <button class="secondary" onclick="showMessage('Hospital settings opened')">
+          Hospital Settings
+        </button>
+
+        <button class="danger" onclick="showMessage('Logout selected')">
+          Logout
+        </button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Recent Appointments</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Patient 001</td>
+            <td>Dr. Sharma</td>
+            <td>10:00 AM</td>
+            <td class="status">Confirmed</td>
+          </tr>
+
+          <tr>
+            <td>Patient 002</td>
+            <td>Dr. Singh</td>
+            <td>11:30 AM</td>
+            <td class="status">Confirmed</td>
+          </tr>
+
+          <tr>
+            <td>Patient 003</td>
+            <td>Dr. Verma</td>
+            <td>01:00 PM</td>
+            <td class="status">Confirmed</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>System Status</h2>
+
+      <p>🟢 Patient Portal: Online</p>
+      <p>🟢 Doctor Portal: Online</p>
+      <p>🟢 Receptionist Portal: Online</p>
+      <p>🟢 Admin Portal: Online</p>
+    </section>
+
+  </main>
+
+  <footer>
+    OPB Live © 2026 | Healthcare Management Platform
+  </footer>
+
+  <script>
+    function showMessage(message) {
+      alert(message);
+    }
+  </script>
+
+</body>
+          </html>
