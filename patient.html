@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPB Live - Patient</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: #ffffff;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: bold;
+      color: #087f5b;
+    }
+
+    .notification {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: #eefaf5;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* CONTENT */
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      padding-bottom: 90px;
+    }
+
+    .welcome {
+      background: linear-gradient(135deg, #087f5b, #0ca678);
+      color: white;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
+
+    .welcome h1 {
+      font-size: 24px;
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      opacity: 0.9;
+    }
+
+    /* SEARCH */
+    .search-box {
+      background: white;
+      padding: 15px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 5px;
+    }
+
+    /* QUICK ACTIONS */
+    .section-title {
+      margin: 22px 0 12px;
+      font-size: 19px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .quick-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .quick-icon {
+      font-size: 27px;
+      margin-bottom: 10px;
+    }
+
+    .quick-card h3 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .quick-card p {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    /* APPOINTMENT */
+    .appointment {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .appointment-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .doctor-name {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .speciality {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .status {
+      background: #e8f8f0;
+      color: #087f5b;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      height: fit-content;
+    }
+
+    .appointment-info {
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+      margin-top: 12px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    /* DOCTORS */
+    .doctor-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 17px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .doctor-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: #e8f8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    .doctor-info {
+      flex: 1;
+    }
+
+    .doctor-info h3 {
+      font-size: 16px;
+    }
+
+    .doctor-info p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .book-btn {
+      border: none;
+      background: #087f5b;
+      color: white;
+      padding: 9px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    /* EMERGENCY */
+    .emergency {
+      margin-top: 20px;
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .emergency h3 {
+      color: #be123c;
+      margin-bottom: 6px;
+    }
+
+    .emergency p {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .emergency-btn {
+      width: 100%;
+      background: #e11d48;
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 5px;
+      z-index: 20;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #6b7280;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .nav-btn span {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn.active {
+      color: #087f5b;
+      font-weight: bold;
+    }
+
+    /* HIDDEN SECTIONS */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* PROFILE */
+    .profile-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      background: #e8f8f0;
+      border-radius: 50%;
+      margin: auto auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+    }
+
+    .profile-item {
+      text-align: left;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .profile-item:last-child {
+      border-bottom: none;
+    }
+
+    .profile-item small {
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">OPB Live</div>
+    <button class="notification" onclick="showMessage('No new notifications')">
+      🔔
+    </button>
+  </header>
+
+
+  <main class="container">
+
+    <!-- HOME PAGE -->
+    <section id="homePage" class="page active">
+
+      <div class="welcome">
+        <h1>Hello, Patient 👋</h1>
+        <p>Manage your healthcare from one place.</p>
+      </div>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search doctors, hospitals or speciality..."
+          onkeyup="searchDoctors()"
+        >
+      </div>
+
+
+      <h2 class="section-title">Quick Actions</h2>
+
+      <div class="quick-grid">
+
+        <div class="quick-card" onclick="openPage('appointmentsPage')">
+          <div class="quick-icon">📅</div>
+          <h3>Appointments</h3>
+          <p>Book and manage appointments</p>
+        </div>
+
+        <div class="quick-card" onclick="openPage('recordsPage')">
+          <div class="quick-icon">📋</div>
+          <h3>Medical Records</h3>
+          <p>View your health records</p>
+        </div>
+
+        <div class="quick-card" onclick="openPage('medicinePage')">
+          <div class="quick-icon">💊</div>
+          <h3>Medicines</h3>
+          <p>View prescriptions</p>
+        </div>
+
+        <div class="quick-card" onclick="openPage('doctorsPage')">
+          <div class="quick-icon">👨‍⚕️</div>
+          <h3>Find Doctor</h3>
+          <p>Search available doctors</p>
+        </div>
+
+      </div>
+
+
+      <h2 class="section-title">Upcoming Appointment</h2>
+
+      <div class="appointment">
+
+        <div class="appointment-row">
+
+          <div>
+            <div class="doctor-name">Dr. Sharma</div>
+            <div class="speciality">General Physician</div>
+          </div>
+
+          <div class="status">Confirmed</div>
+
+        </div>
+
+        <div class="appointment-info">
+          📅 30 September 2026<br><br>
+          🕐 10:30 AM<br><br>
+          🏥 OPB Hospital
+        </div>
+
+      </div>
+
+
+      <div class="emergency">
+
+        <h3>🚨 Emergency</h3>
+
+        <p>
+          If you need urgent medical assistance, use the emergency option.
+        </p>
+
+        <button class="emergency-btn" onclick="emergencyCall()">
+          Call Emergency
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- APPOINTMENTS PAGE -->
+    <section id="appointmentsPage" class="page">
+
+      <h2 class="section-title">My Appointments</h2>
+
+      <div class="appointment">
+
+        <div class="appointment-row">
+          <div>
+            <div class="doctor-name">Dr. Sharma</div>
+            <div class="speciality">General Physician</div>
+          </div>
+
+          <div class="status">Confirmed</div>
+        </div>
+
+        <div class="appointment-info">
+          📅 30 September 2026<br><br>
+          🕐 10:30 AM<br><br>
+          🎫 Token: A-24
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DOCTORS PAGE -->
+    <section id="doctorsPage" class="page">
+
+      <h2 class="section-title">Find a Doctor</h2>
+
+      <div id="doctorList">
+
+        <div class="doctor-card">
+
+          <div class="doctor-avatar">👨‍⚕️</div>
+
+          <div class="doctor-info">
+            <h3>Dr. Sharma</h3>
+            <p>General Physician</p>
+            <p>OPB Hospital</p>
+          </div>
+
+          <button class="book-btn" onclick="bookAppointment('Dr. Sharma')">
+            Book
+          </button>
+
+        </div>
+
+
+        <div class="doctor-card">
+
+          <div class="doctor-avatar">👩‍⚕️</div>
+
+          <div class="doctor-info">
+            <h3>Dr. Priya</h3>
+            <p>Gynecologist</p>
+            <p>OPB Hospital</p>
+          </div>
+
+          <button class="book-btn" onclick="bookAppointment('Dr. Priya')">
+            Book
+          </button>
+
+        </div>
+
+
+        <div class="doctor-card">
+
+          <div class="doctor-avatar">👨‍⚕️</div>
+
+          <div class="doctor-info">
+            <h3>Dr. Verma</h3>
+            <p>Cardiologist</p>
+            <p>OPB Hospital</p>
+          </div>
+
+          <button class="book-btn" onclick="bookAppointment('Dr. Verma')">
+            Book
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RECORDS PAGE -->
+    <section id="recordsPage" class="page">
+
+      <h2 class="section-title">Medical Records</h2>
+
+      <div class="appointment">
+
+        <h3>Blood Test Report</h3>
+
+        <div class="appointment-info">
+          📅 25 September 2026<br><br>
+          Status: Available
+        </div>
+
+      </div>
+
+      <br>
+
+      <div class="appointment">
+
+        <h3>Doctor Consultation</h3>
+
+        <div class="appointment-info">
+          📅 20 September 2026<br><br>
+          Dr. Sharma
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- MEDICINE PAGE -->
+    <section id="medicinePage" class="page">
+
+      <h2 class="section-title">My Medicines</h2>
+
+      <div class="appointment">
+
+        <h3>Prescription #OPB-1024</h3>
+
+        <div class="appointment-info">
+          💊 Medicine 1 — Morning<br><br>
+          💊 Medicine 2 — Night<br><br>
+          ⏳ Duration — 5 Days
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROFILE PAGE -->
+    <section id="profilePage" class="page">
+
+      <h2 class="section-title">My Profile</h2>
+
+      <div class="profile-card">
+
+        <div class="profile-avatar">👤</div>
+
+        <h2>Patient Name</h2>
+        <p style="color:#6b7280; margin-top:5px;">
+          Patient ID: OPB-1001
+        </p>
+
+        <div class="profile-item">
+          <small>Mobile</small>
+          <br>
+          +91 XXXXX XXXXX
+        </div>
+
+        <div class="profile-item">
+          <small>Email</small>
+          <br>
+          patient@example.com
+        </div>
+
+        <div class="profile-item">
+          <small>Blood Group</small>
+          <br>
+          O+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active" onclick="openPage('homePage', this)">
+      <span>🏠</span>
+      Home
+    </button>
+
+    <button class="nav-btn" onclick="openPage('appointmentsPage', this)">
+      <span>📅</span>
+      Appointments
+    </button>
+
+    <button class="nav-btn" onclick="openPage('doctorsPage', this)">
+      <span>👨‍⚕️</span>
+      Doctors
+    </button>
+
+    <button class="nav-btn" onclick="openPage('profilePage', this)">
+      <span>👤</span>
+      Profile
+    </button>
+
+  </nav>
+
+
+  <script>
+
+    function openPage(pageId, button) {
+
+      const pages = document.querySelectorAll(".page");
+
+      pages.forEach(function(page) {
+        page.classList.remove("active");
+      });
+
+      document.getElementById(pageId).classList.add("active");
+
+      const buttons = document.querySelectorAll(".nav-btn");
+
+      buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+      });
+
+      if (button) {
+        button.classList.add("active");
+      }
+
+      window.scrollTo(0, 0);
+    }
+
+
+    function bookAppointment(doctor) {
+
+      alert(
+        "Appointment request started for " +
+        doctor +
+        ".\n\nReal booking will be connected to the hospital system later."
+      );
+
+    }
+
+
+    function emergencyCall() {
+
+      alert(
+        "Emergency service selected.\n\n" +
+        "In the real app this will connect to the configured emergency service."
+      );
+
+    }
+
+
+    function showMessage(message) {
+      alert(message);
+    }
+
+
+    function searchDoctors() {
+
+      const input =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+      const doctors =
+        document.querySelectorAll(".doctor-card");
+
+      doctors.forEach(function(card) {
+
+        const text =
+          card.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+
+      });
+
+    }
+
+  </script>
+
+</body>
+                      </html>
