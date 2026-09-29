@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>OPB Live - Healthcare Management</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #0b7a75;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 600px;
+      margin: 25px auto;
+    }
+
+    .welcome {
+      background: white;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #667085;
+      line-height: 1.5;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .role-card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .role-card:active {
+      transform: scale(0.96);
+    }
+
+    .icon {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .role-card h3 {
+      margin-bottom: 6px;
+    }
+
+    .role-card p {
+      font-size: 12px;
+      color: #667085;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .back {
+      background: transparent;
+      border: none;
+      color: #0b7a75;
+      font-size: 16px;
+      margin-bottom: 18px;
+      cursor: pointer;
+    }
+
+    .login-card {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .login-card h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #0b7a75;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.active {
+      display: block;
+    }
+
+    .dashboard-header {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      margin-bottom: 15px;
+    }
+
+    .dashboard-header h2 {
+      margin-bottom: 5px;
+    }
+
+    .dashboard-header p {
+      color: #667085;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .dashboard-item {
+      background: white;
+      padding: 20px 12px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .dashboard-item span {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      color: #98a2b3;
+      font-size: 12px;
+      padding: 30px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>OPB Live</h1>
+  <p>Healthcare Management Platform</p>
+</header>
+
+<div class="container">
+
+  <!-- HOME SCREEN -->
+  <div id="homeScreen" class="screen active">
+
+    <div class="welcome">
+      <h2>Welcome to OPB Live 👋</h2>
+      <p>
+        A healthcare platform connecting patients,
+        doctors, receptionists and administrators.
+      </p>
+    </div>
+
+    <div class="roles">
+
+      <div class="role-card" onclick="openLogin('Patient')">
+        <div class="icon">🧑‍⚕️</div>
+        <h3>Patient</h3>
+        <p>Book appointments and manage your health.</p>
+      </div>
+
+      <div class="role-card" onclick="openLogin('Doctor')">
+        <div class="icon">👨‍⚕️</div>
+        <h3>Doctor</h3>
+        <p>Manage patients and appointments.</p>
+      </div>
+
+      <div class="role-card" onclick="openLogin('Receptionist')">
+        <div class="icon">🧑‍💼</div>
+        <h3>Receptionist</h3>
+        <p>Manage appointments and patients.</p>
+      </div>
+
+      <div class="role-card" onclick="openLogin('Admin')">
+        <div class="icon">⚙️</div>
+        <h3>Admin</h3>
+        <p>Manage the complete healthcare system.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="screen">
+
+    <button class="back" onclick="goHome()">← Back</button>
+
+    <div class="login-card">
+
+      <h2 id="loginTitle">Login</h2>
+
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="Enter your name"
+      >
+
+      <input
+        type="email"
+        id="emailInput"
+        placeholder="Enter email"
+      >
+
+      <input
+        type="password"
+        id="passwordInput"
+        placeholder="Enter password"
+      >
+
+      <button class="btn" onclick="login()">
+        Login
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboardScreen" class="screen">
+
+    <button class="back" onclick="goHome()">← Logout</button>
+
+    <div class="dashboard-header">
+      <h2 id="dashboardTitle">Dashboard</h2>
+      <p id="dashboardMessage"></p>
+    </div>
+
+    <div id="patientDashboard" class="dashboard">
+      <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+          <span>📅</span>
+          Book Appointment
+        </div>
+
+        <div class="dashboard-item">
+          <span>🩺</span>
+          My Doctors
+        </div>
+
+        <div class="dashboard-item">
+          <span>📋</span>
+          Medical Records
+        </div>
+
+        <div class="dashboard-item">
+          <span>💊</span>
+          Prescriptions
+        </div>
+
+      </div>
+    </div>
+
+
+    <div id="doctorDashboard" class="dashboard">
+      <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+          <span>📅</span>
+          Appointments
+        </div>
+
+        <div class="dashboard-item">
+          <span>👥</span>
+          My Patients
+        </div>
+
+        <div class="dashboard-item">
+          <span>📝</span>
+          Prescriptions
+        </div>
+
+        <div class="dashboard-item">
+          <span>📊</span>
+          Reports
+        </div>
+
+      </div>
+    </div>
+
+
+    <div id="receptionistDashboard" class="dashboard">
+      <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+          <span>📅</span>
+          Manage Appointments
+        </div>
+
+        <div class="dashboard-item">
+          <span>👤</span>
+          Register Patient
+        </div>
+
+        <div class="dashboard-item">
+          <span>🧾</span>
+          Billing
+        </div>
+
+        <div class="dashboard-item">
+          <span>📞</span>
+          Patient Support
+        </div>
+
+      </div>
+    </div>
+
+
+    <div id="adminDashboard" class="dashboard">
+      <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+          <span>👨‍⚕️</span>
+          Manage Doctors
+        </div>
+
+        <div class="dashboard-item">
+          <span>👥</span>
+          Manage Patients
+        </div>
+
+        <div class="dashboard-item">
+          <span>🧑‍💼</span>
+          Manage Staff
+        </div>
+
+        <div class="dashboard-item">
+          <span>📊</span>
+          System Reports
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    OPB Live © 2026
+  </footer>
+
+</div>
+
+
+<script>
+
+  let selectedRole = "";
+
+  function openLogin(role) {
+
+    selectedRole = role;
+
+    document.getElementById("homeScreen")
+      .classList.remove("active");
+
+    document.getElementById("loginScreen")
+      .classList.add("active");
+
+    document.getElementById("loginTitle")
+      .innerText = role + " Login";
+
+  }
+
+
+  function login() {
+
+    let name =
+      document.getElementById("nameInput").value;
+
+    if (name === "") {
+      alert("Please enter your name.");
+      return;
+    }
+
+    document.getElementById("loginScreen")
+      .classList.remove("active");
+
+    document.getElementById("dashboardScreen")
+      .classList.add("active");
+
+    document.getElementById("dashboardTitle")
+      .innerText = selectedRole + " Dashboard";
+
+    document.getElementById("dashboardMessage")
+      .innerText = "Welcome, " + name + "!";
+
+
+    document.querySelectorAll(".dashboard")
+      .forEach(function(item) {
+        item.classList.remove("active");
+      });
+
+
+    if (selectedRole === "Patient") {
+      document.getElementById("patientDashboard")
+        .classList.add("active");
+    }
+
+    if (selectedRole === "Doctor") {
+      document.getElementById("doctorDashboard")
+        .classList.add("active");
+    }
+
+    if (selectedRole === "Receptionist") {
+      document.getElementById("receptionistDashboard")
+        .classList.add("active");
+    }
+
+    if (selectedRole === "Admin") {
+      document.getElementById("adminDashboard")
+        .classList.add("active");
+    }
+
+  }
+
+
+  function goHome() {
+
+    document.getElementById("loginScreen")
+      .classList.remove("active");
+
+    document.getElementById("dashboardScreen")
+      .classList.remove("active");
+
+    document.getElementById("homeScreen")
+      .classList.add("active");
+
+  }
+
+</script>
+
+</body>
+</html>
