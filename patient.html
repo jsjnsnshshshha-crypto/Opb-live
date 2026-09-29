@@ -90,12 +90,13 @@
       padding: 5px;
     }
 
-    /* QUICK ACTIONS */
+    /* SECTION */
     .section-title {
       margin: 22px 0 12px;
       font-size: 19px;
     }
 
+    /* QUICK ACTIONS */
     .quick-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -219,6 +220,49 @@
       cursor: pointer;
     }
 
+    /* SPECIALISTS */
+    .specialist-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+    }
+
+    .specialist-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 14px;
+      background: #e8f8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .specialist-info {
+      flex: 1;
+    }
+
+    .specialist-info h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .specialist-info p {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .specialist-arrow {
+      font-size: 22px;
+      color: #087f5b;
+    }
+
     /* EMERGENCY */
     .emergency {
       margin-top: 20px;
@@ -335,6 +379,7 @@
   <!-- HEADER -->
   <header class="header">
     <div class="brand">OPB Live</div>
+
     <button class="notification" onclick="showMessage('No new notifications')">
       🔔
     </button>
@@ -351,16 +396,19 @@
         <p>Manage your healthcare from one place.</p>
       </div>
 
+
+      <!-- SEARCH -->
       <div class="search-box">
         <input
           type="text"
           id="searchInput"
-          placeholder="Search doctors, hospitals or speciality..."
+          placeholder="Search doctors or specialists..."
           onkeyup="searchDoctors()"
         >
       </div>
 
 
+      <!-- QUICK ACTIONS -->
       <h2 class="section-title">Quick Actions</h2>
 
       <div class="quick-grid">
@@ -371,17 +419,20 @@
           <p>Book and manage appointments</p>
         </div>
 
+
         <div class="quick-card" onclick="openPage('recordsPage')">
           <div class="quick-icon">📋</div>
           <h3>Medical Records</h3>
           <p>View your health records</p>
         </div>
 
-        <div class="quick-card" onclick="openPage('medicinePage')">
-          <div class="quick-icon">💊</div>
-          <h3>Medicines</h3>
-          <p>View prescriptions</p>
+
+        <div class="quick-card" onclick="openPage('specialistsPage')">
+          <div class="quick-icon">🩺</div>
+          <h3>Specialists</h3>
+          <p>Find the right specialist</p>
         </div>
+
 
         <div class="quick-card" onclick="openPage('doctorsPage')">
           <div class="quick-icon">👨‍⚕️</div>
@@ -392,6 +443,7 @@
       </div>
 
 
+      <!-- UPCOMING APPOINTMENT -->
       <h2 class="section-title">Upcoming Appointment</h2>
 
       <div class="appointment">
@@ -416,6 +468,7 @@
       </div>
 
 
+      <!-- EMERGENCY -->
       <div class="emergency">
 
         <h3>🚨 Emergency</h3>
@@ -441,12 +494,14 @@
       <div class="appointment">
 
         <div class="appointment-row">
+
           <div>
             <div class="doctor-name">Dr. Sharma</div>
             <div class="speciality">General Physician</div>
           </div>
 
           <div class="status">Confirmed</div>
+
         </div>
 
         <div class="appointment-info">
@@ -454,6 +509,111 @@
           🕐 10:30 AM<br><br>
           🎫 Token: A-24
         </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SPECIALISTS PAGE -->
+    <section id="specialistsPage" class="page">
+
+      <h2 class="section-title">Medical Specialists</h2>
+
+      <div class="specialist-card" onclick="selectSpecialist('Cardiologist')">
+
+        <div class="specialist-icon">❤️</div>
+
+        <div class="specialist-info">
+          <h3>Cardiologist</h3>
+          <p>Heart and cardiovascular problems</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('Gynecologist')">
+
+        <div class="specialist-icon">👩‍⚕️</div>
+
+        <div class="specialist-info">
+          <h3>Gynecologist</h3>
+          <p>Women's health and reproductive care</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('Pediatrician')">
+
+        <div class="specialist-icon">👶</div>
+
+        <div class="specialist-info">
+          <h3>Pediatrician</h3>
+          <p>Healthcare for children</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('Dermatologist')">
+
+        <div class="specialist-icon">🧴</div>
+
+        <div class="specialist-info">
+          <h3>Dermatologist</h3>
+          <p>Skin, hair and nail problems</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('Orthopedic')">
+
+        <div class="specialist-icon">🦴</div>
+
+        <div class="specialist-info">
+          <h3>Orthopedic</h3>
+          <p>Bones, joints and muscles</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('Neurologist')">
+
+        <div class="specialist-icon">🧠</div>
+
+        <div class="specialist-info">
+          <h3>Neurologist</h3>
+          <p>Brain and nervous system</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
+
+      </div>
+
+
+      <div class="specialist-card" onclick="selectSpecialist('General Physician')">
+
+        <div class="specialist-icon">🩺</div>
+
+        <div class="specialist-info">
+          <h3>General Physician</h3>
+          <p>General health and common illnesses</p>
+        </div>
+
+        <div class="specialist-arrow">›</div>
 
       </div>
 
@@ -477,7 +637,9 @@
             <p>OPB Hospital</p>
           </div>
 
-          <button class="book-btn" onclick="bookAppointment('Dr. Sharma')">
+          <button
+            class="book-btn"
+            onclick="bookAppointment('Dr. Sharma')">
             Book
           </button>
 
@@ -494,7 +656,9 @@
             <p>OPB Hospital</p>
           </div>
 
-          <button class="book-btn" onclick="bookAppointment('Dr. Priya')">
+          <button
+            class="book-btn"
+            onclick="bookAppointment('Dr. Priya')">
             Book
           </button>
 
@@ -511,7 +675,9 @@
             <p>OPB Hospital</p>
           </div>
 
-          <button class="book-btn" onclick="bookAppointment('Dr. Verma')">
+          <button
+            class="book-btn"
+            onclick="bookAppointment('Dr. Verma')">
             Book
           </button>
 
@@ -554,26 +720,6 @@
     </section>
 
 
-    <!-- MEDICINE PAGE -->
-    <section id="medicinePage" class="page">
-
-      <h2 class="section-title">My Medicines</h2>
-
-      <div class="appointment">
-
-        <h3>Prescription #OPB-1024</h3>
-
-        <div class="appointment-info">
-          💊 Medicine 1 — Morning<br><br>
-          💊 Medicine 2 — Night<br><br>
-          ⏳ Duration — 5 Days
-        </div>
-
-      </div>
-
-    </section>
-
-
     <!-- PROFILE PAGE -->
     <section id="profilePage" class="page">
 
@@ -584,9 +730,11 @@
         <div class="profile-avatar">👤</div>
 
         <h2>Patient Name</h2>
+
         <p style="color:#6b7280; margin-top:5px;">
           Patient ID: OPB-1001
         </p>
+
 
         <div class="profile-item">
           <small>Mobile</small>
@@ -594,11 +742,13 @@
           +91 XXXXX XXXXX
         </div>
 
+
         <div class="profile-item">
           <small>Email</small>
           <br>
           patient@example.com
         </div>
+
 
         <div class="profile-item">
           <small>Blood Group</small>
@@ -616,22 +766,33 @@
   <!-- BOTTOM NAVIGATION -->
   <nav class="bottom-nav">
 
-    <button class="nav-btn active" onclick="openPage('homePage', this)">
+    <button
+      class="nav-btn active"
+      onclick="openPage('homePage', this)">
       <span>🏠</span>
       Home
     </button>
 
-    <button class="nav-btn" onclick="openPage('appointmentsPage', this)">
+
+    <button
+      class="nav-btn"
+      onclick="openPage('appointmentsPage', this)">
       <span>📅</span>
       Appointments
     </button>
 
-    <button class="nav-btn" onclick="openPage('doctorsPage', this)">
-      <span>👨‍⚕️</span>
-      Doctors
+
+    <button
+      class="nav-btn"
+      onclick="openPage('specialistsPage', this)">
+      <span>🩺</span>
+      Specialists
     </button>
 
-    <button class="nav-btn" onclick="openPage('profilePage', this)">
+
+    <button
+      class="nav-btn"
+      onclick="openPage('profilePage', this)">
       <span>👤</span>
       Profile
     </button>
@@ -651,11 +812,13 @@
 
       document.getElementById(pageId).classList.add("active");
 
+
       const buttons = document.querySelectorAll(".nav-btn");
 
       buttons.forEach(function(btn) {
         btn.classList.remove("active");
       });
+
 
       if (button) {
         button.classList.add("active");
@@ -671,6 +834,17 @@
         "Appointment request started for " +
         doctor +
         ".\n\nReal booking will be connected to the hospital system later."
+      );
+
+    }
+
+
+    function selectSpecialist(specialist) {
+
+      alert(
+        specialist +
+        " selected.\n\n" +
+        "In the next version, OPB Live will show available doctors, timings and appointment slots for this specialist."
       );
 
     }
@@ -698,13 +872,16 @@
         .value
         .toLowerCase();
 
+
       const doctors =
         document.querySelectorAll(".doctor-card");
+
 
       doctors.forEach(function(card) {
 
         const text =
           card.innerText.toLowerCase();
+
 
         if (text.includes(input)) {
           card.style.display = "flex";
@@ -719,4 +896,4 @@
   </script>
 
 </body>
-                      </html>
+              </html>
