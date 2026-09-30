@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B8F6A">
+<title>OPD LIVE - Admin Panel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f7faf9;color:#172321}.app{max-width:720px;margin:auto;min-height:100vh;padding-bottom:30px}
+.header{background:#fff;padding:18px;border-bottom:1px solid #e6ecea;position:sticky;top:0;z-index:5}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:#0b8f6a;color:#fff;display:grid;place-items:center;font-weight:800}
+h1{font-size:20px}.muted{font-size:11px;color:#6d7b78;margin-top:3px}.content{padding:18px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}
+.stat{background:#fff;border:1px solid #e6ecea;border-radius:16px;padding:14px}.stat strong{display:block;font-size:24px;color:#0b8f6a}.stat span{font-size:10px;color:#6d7b78}
+.card{background:#fff;border:1px solid #e6ecea;border-radius:18px;padding:16px;margin-bottom:14px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #eef2f0}.row:last-child{border-bottom:0}.name{font-weight:800;font-size:13px}.pill{padding:6px 9px;border-radius:20px;background:#eaf8f1;color:#16855f;font-size:10px;font-weight:700}
+.btn{width:100%;height:44px;border:0;border-radius:12px;background:#0b8f6a;color:#fff;font-weight:800;margin-top:10px}.danger{background:#fff0f0;color:#c5353a}@media(max-width:500px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="app"><header class="header"><div class="brand"><div class="logo">O</div><div><h1>OPD LIVE</h1><div class="muted">Central Admin Panel</div></div></div></header>
+<main class="content">
+<div class="grid"><div class="stat"><strong id="hospitals">1</strong><span>Hospitals</span></div><div class="stat"><strong id="doctors">0</strong><span>Doctors</span></div><div class="stat"><strong id="patients">0</strong><span>Patients</span></div><div class="stat"><strong id="waiting">0</strong><span>Waiting</span></div></div>
+<div class="card"><div class="name" style="font-size:17px">Hospital Management</div><div class="muted">Connected hospital and OPD overview</div><div class="row"><span><b>City Care Hospital</b><br><span class="muted">Main hospital</span></span><span class="pill">ACTIVE</span></div></div>
+<div class="card"><div class="name" style="font-size:17px">Doctors & OPD Status</div><div id="doctorList"></div></div>
+<div class="card"><div class="name" style="font-size:17px">Recent Patients</div><div id="patientList"></div></div>
+<div class="card"><div class="name" style="font-size:17px">Prototype Controls</div><button class="btn danger" onclick="resetDemoData();render()">Reset demo data</button></div>
+</main></div>
+<script src="app.js"></script>
+<script>
+function render(){const d=getOPDData();doctors.textContent=d.doctors.length;patients.textContent=d.patients.length;waiting.textContent=d.patients.filter(p=>p.status==="Waiting").length;
+doctorList.innerHTML=d.doctors.map(x=>`<div class="row"><span><b>${x.name}</b><br><span class="muted">${x.speciality}</span></span><span class="pill">${x.status}</span></div>`).join("");
+patientList.innerHTML=d.patients.slice().reverse().slice(0,8).map(p=>{let doc=d.doctors.find(x=>x.id===p.doctorId);return `<div class="row"><span><b>${p.name}</b><br><span class="muted">Token #${p.token} • ${doc?doc.name:""}</span></span><span class="pill">${p.status}</span></div>`}).join("")||'<div class="muted" style="padding-top:10px">No patients</div>'}
+window.addEventListener("storage",render);render();
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B8F6A">
+<title>OPD LIVE - Doctor & Receptionist</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#f7faf9;color:#172321}
+.app{max-width:520px;margin:auto;min-height:100vh;padding-bottom:30px}.header{background:#fff;padding:18px;border-bottom:1px solid #e6ecea;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:#0b8f6a;color:#fff;display:grid;place-items:center;font-weight:800}
+h1{font-size:20px}.muted{font-size:11px;color:#6d7b78;margin-top:3px}.content{padding:18px}.role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+button{border:0;cursor:pointer;font:inherit}.tab{padding:12px;border-radius:12px;background:#eaf3f0;font-weight:700;color:#45605a}.tab.active{background:#0b8f6a;color:#fff}
+.card{background:#fff;border:1px solid #e6ecea;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 6px 20px #1723210b}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.doctor{font-size:16px;font-weight:800}.pill{padding:6px 9px;border-radius:20px;background:#eaf8f1;color:#16855f;font-size:10px;font-weight:700}
+.queue{margin-top:14px;background:#f7faf9;border-radius:14px;padding:15px;display:grid;grid-template-columns:1fr 1fr}.number{font-size:32px;font-weight:900;color:#0b8f6a}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn{min-height:43px;border-radius:12px;font-weight:800}.primary{background:#0b8f6a;color:#fff}.secondary{background:#eef4f2;color:#172321}
+input,select{width:100%;height:45px;border:1px solid #dfe8e5;border-radius:11px;padding:0 12px;margin-top:7px;margin-bottom:11px}.label{font-size:11px;font-weight:700}
+.hidden{display:none}.danger{background:#fff0f0;color:#c5353a}.success{color:#16855f;font-size:12px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="brand"><div class="logo">O</div><div><h1>OPD LIVE</h1><div class="muted">Doctor • Receptionist App</div></div></div></header>
+<main class="content">
+<div class="role-tabs">
+<button class="tab active" id="doctorTab" onclick="setRole('doctor')">Doctor</button>
+<button class="tab" id="receptionTab" onclick="setRole('reception')">Receptionist</button>
+</div>
+
+<section id="doctorView">
+<div class="card">
+<div class="row"><div><div class="doctor" id="doctorName"></div><div class="muted" id="doctorSpec"></div></div><div class="pill" id="doctorStatus"></div></div>
+<div class="queue"><div><div class="muted">Current OPD</div><div class="number" id="currentToken"></div></div><div><div class="muted">Patients Today</div><div class="number" id="patientCount"></div></div></div>
+<div class="actions">
+<button class="btn secondary" onclick="changeStatus()">Change Status</button>
+<button class="btn primary" onclick="callNext()">Call Next Patient</button>
+</div>
+<p id="doctorMessage" class="success" style="margin-top:10px"></p>
+</div>
+<div class="card"><div class="doctor">Today's Queue</div><div class="muted" style="margin-top:5px">Patients waiting for this doctor</div><div id="queueList" style="margin-top:12px"></div></div>
+</section>
+
+<section id="receptionView" class="hidden">
+<div class="card"><div class="doctor">Add Patient to OPD</div>
+<label class="label">Patient name</label><input id="patientName" placeholder="Enter patient name">
+<label class="label">Phone</label><input id="patientPhone" placeholder="10 digit mobile number" inputmode="numeric">
+<label class="label">Doctor</label><select id="doctorSelect"></select>
+<button class="btn primary" style="width:100%" onclick="registerPatient()">Add Patient & Generate Token</button>
+<p id="receptionMessage" class="success" style="margin-top:10px"></p></div>
+<div class="card"><div class="doctor">Live OPD Queue</div><div id="receptionQueue" style="margin-top:12px"></div></div>
+</section>
+</main>
+</div>
+<script src="app.js"></script>
+<script>
+let role="doctor", doctorId="d1";
+function setRole(r){role=r;doctorView.classList.toggle("hidden",r!=="doctor");receptionView.classList.toggle("hidden",r!=="reception");doctorTab.classList.toggle("active",r==="doctor");receptionTab.classList.toggle("active",r==="reception");render();}
+function render(){
+ const data=getOPDData(), d=data.doctors.find(x=>x.id===doctorId);
+ doctorName.textContent=d.name; doctorSpec.textContent=d.speciality+" • "+data.hospital; doctorStatus.textContent=d.status;
+ currentToken.textContent=d.current; patientCount.textContent=d.patientsToday;
+ queueList.innerHTML=data.patients.filter(p=>p.doctorId===doctorId).map(p=>`<div class="row" style="padding:9px 0;border-bottom:1px solid #eef2f0"><span><b>#${p.token}</b> ${p.name}</span><span class="muted">${p.status}</span></div>`).join("")||'<div class="muted">No patients yet</div>';
+ doctorSelect.innerHTML=data.doctors.map(x=>`<option value="${x.id}">${x.name} - ${x.speciality}</option>`).join("");
+ receptionQueue.innerHTML=data.patients.map(p=>{let d=data.doctors.find(x=>x.id===p.doctorId);return `<div class="row" style="padding:9px 0;border-bottom:1px solid #eef2f0"><span><b>#${p.token}</b> ${p.name}</span><span class="muted">${d?d.name:""}</span></div>`}).join("");
+}
+function callNext(){let d=nextToken(doctorId);doctorMessage.textContent="Next patient called. Current OPD is now "+d.current+".";render();}
+function changeStatus(){let d=getOPDData().doctors.find(x=>x.id===doctorId);setDoctorStatus(doctorId,d.status==="Available"?"Not Available":"Available");render();}
+function registerPatient(){let n=patientName.value.trim(),ph=patientPhone.value.trim(),did=doctorSelect.value;if(!n||!ph){receptionMessage.textContent="Please enter patient name and phone.";return}let p=addPatient(n,ph,did);receptionMessage.textContent=`Patient added successfully. Token #${p.token}`;patientName.value="";patientPhone.value="";render();}
+window.addEventListener("storage",render); render();
+</script>
+</body>
+</html>
