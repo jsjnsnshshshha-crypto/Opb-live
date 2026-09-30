@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B8F6A">
+  <title>OPD LIVE - Staff</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div>
+      <div class="logo">OPD LIVE</div>
+      <div class="subtitle">Doctor • Receptionist • Live OPD</div>
+    </div>
+
+    <div class="status" id="headerStatus">
+      OFFLINE
+    </div>
+  </header>
+
+  <main>
+
+    <!-- LOGIN -->
+    <section id="loginScreen" class="screen active">
+
+      <h1>Staff Login</h1>
+      <p class="muted">Doctor and receptionist access</p>
+
+      <div class="role-grid">
+
+        <button
+          class="role-btn active"
+          id="doctorRole"
+          onclick="selectRole('doctor')">
+          👨‍⚕️
+          <strong>Doctor</strong>
+        </button>
+
+        <button
+          class="role-btn"
+          id="receptionRole"
+          onclick="selectRole('receptionist')">
+          🧑‍💼
+          <strong>Receptionist</strong>
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <label>Email / ID</label>
+
+        <input
+          id="loginId"
+          class="input"
+          type="text"
+          placeholder="Enter ID">
+
+        <label>Password</label>
+
+        <input
+          id="loginPassword"
+          class="input"
+          type="password"
+          placeholder="Enter password">
+
+        <button
+          class="btn btn-primary"
+          onclick="login()">
+          Login
+        </button>
+
+        <div class="note">
+          Demo mode: any ID and password can be used.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboardScreen" class="screen">
+
+      <div class="top-row">
+
+        <div>
+          <h1 id="welcomeTitle">Dashboard</h1>
+          <p class="muted" id="roleText">
+            Staff
+          </p>
+        </div>
+
+        <button
+          class="logout-small"
+          onclick="logout()">
+          Logout
+        </button>
+
+      </div>
+
+
+      <!-- DOCTOR / HOSPITAL -->
+      <div class="doctor-card">
+
+        <div class="doctor-header">
+
+          <div>
+            <div
+              class="doctor-name"
+              id="doctorName">
+              Dr. Amit Sharma
+            </div>
+
+            <div
+              class="doctor-speciality"
+              id="doctorSpeciality">
+              General Physician
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span></span>
+            LIVE
+          </div>
+
+        </div>
+
+        <div class="hospital">
+          Hospital:
+          <strong id="hospitalName">
+            OPD LIVE Hospital
+          </strong>
+        </div>
+
+      </div>
+
+
+      <!-- STATS -->
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="currentToken">
+            24
+          </strong>
+          <span>Current Token</span>
+        </div>
+
+        <div class="stat">
+          <strong id="waitingCount">
+            8
+          </strong>
+          <span>Waiting</span>
+        </div>
+
+        <div class="stat">
+          <strong id="completedCount">
+            23
+          </strong>
+          <span>Completed</span>
+        </div>
+
+      </div>
+
+
+      <!-- LIVE QUEUE -->
+      <div class="card">
+
+        <h2>Live OPD Queue</h2>
+
+        <div
+          class="big-token"
+          id="bigToken">
+          24
+        </div>
+
+        <div class="token-label">
+          CURRENT PATIENT TOKEN
+        </div>
+
+        <div class="queue-buttons">
+
+          <button
+            class="previous"
+            onclick="previousToken()">
+            − Previous
+          </button>
+
+          <button
+            class="next"
+            onclick="nextToken()">
+            ✓ Next
+          </button>
+
+          <button
+            class="add"
+            onclick="addPatient()">
+            + Add
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- OPD STATUS -->
+      <div class="card">
+
+        <h2>OPD Status</h2>
+
+        <div class="two-buttons">
+
+          <button
+            class="btn btn-primary"
+            onclick="setOPDStatus(true)">
+            🟢 OPD Open
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="setOPDStatus(false)">
+            🔴 OPD Closed
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PATIENT QUEUE -->
+      <div class="card">
+
+        <div class="section-row">
+
+          <h2>Patient Queue</h2>
+
+          <div class="live-small">
+            ● LIVE
+          </div>
+
+        </div>
+
+        <div id="patientList"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PATIENTS -->
+    <section id="patientsScreen" class="screen">
+
+      <h1>Patients</h1>
+
+      <p class="muted">
+        Today's OPD patient queue
+      </p>
+
+      <div class="card patients-card">
+
+        <div class="patient">
+          <div class="token">25</div>
+
+          <div class="patient-info">
+            <strong>Rahul Kumar</strong>
+            <span>General OPD • 10:15 AM</span>
+          </div>
+
+          <span class="waiting">
+            Waiting
+          </span>
+        </div>
+
+        <div class="patient">
+          <div class="token">26</div>
+
+          <div class="patient-info">
+            <strong>Priya Singh</strong>
+            <span>General OPD • 10:20 AM</span>
+          </div>
+
+          <span class="waiting">
+            Waiting
+          </span>
+        </div>
+
+        <div class="patient">
+          <div class="token">27</div>
+
+          <div class="patient-info">
+            <strong>Amit Verma</strong>
+            <span>General OPD • 10:25 AM</span>
+          </div>
+
+          <span class="waiting">
+            Waiting
+          </span>
+        </div>
+
+        <div class="patient">
+          <div class="token">28</div>
+
+          <div class="patient-info">
+            <strong>Neha Sharma</strong>
+            <span>General OPD • 10:30 AM</span>
+          </div>
+
+          <span class="waiting">
+            Waiting
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+    <section id="settingsScreen" class="screen">
+
+      <h1>Staff Settings</h1>
+
+      <p class="muted">
+        Doctor / receptionist account settings
+      </p>
+
+      <div class="card">
+
+        <label>Staff Name</label>
+
+        <input
+          class="input"
+          id="staffName"
+          value="Dr. Amit Sharma">
+
+        <label>Hospital</label>
+
+        <input
+          class="input"
+          id="staffHospital"
+          value="OPD LIVE Hospital">
+
+        <label>Specialisation</label>
+
+        <input
+          class="input"
+          id="staffSpeciality"
+          value="General Physician">
+
+        <button
+          class="btn btn-primary"
+          onclick="saveSettings()">
+          Save Settings
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- NAVIGATION -->
+  <nav
+    class="bottom-nav"
+    id="bottomNav">
+
+    <button
+      class="active"
+      onclick="showScreen('dashboardScreen', this)">
+      📊
+      <span>Dashboard</span>
+    </button>
+
+    <button
+      onclick="showScreen('patientsScreen', this)">
+      👥
+      <span>Patients</span>
+    </button>
+
+    <button
+      onclick="showScreen('settingsScreen', this)">
+      ⚙️
+      <span>Settings</span>
+    </button>
+
+  </nav>
+
+
+  <!-- TOAST -->
+  <div
+    class="toast"
+    id="toast">
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
