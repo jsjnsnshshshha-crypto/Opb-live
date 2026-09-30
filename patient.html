@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#0B8F6A">
+
+  <title>OPD LIVE - Patient</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #eef4f2;
+      color: #17332b;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: auto;
+      background: #f7faf9;
+      position: relative;
+      padding-bottom: 82px;
+    }
+
+    /* HEADER */
+
+    .header {
+      background: #ffffff;
+      padding: 18px 18px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid #e6efec;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0b8f6a;
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      font-size: 12px;
+      color: #71817c;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid #dce8e4;
+      background: #ffffff;
+      border-radius: 13px;
+      font-size: 19px;
+    }
+
+    /* CONTENT */
+
+    .content {
+      padding: 18px;
+    }
+
+    .welcome {
+      margin-bottom: 16px;
+    }
+
+    .welcome h1 {
+      font-size: 27px;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: #71817c;
+      font-size: 14px;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid #dce8e4;
+      border-radius: 15px;
+      padding: 0 14px;
+      height: 50px;
+      margin-bottom: 22px;
+    }
+
+    .search-box span {
+      font-size: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: #17332b;
+    }
+
+    /* SECTION */
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      font-size: 18px;
+    }
+
+    .section-title button {
+      border: 0;
+      background: transparent;
+      color: #0b8f6a;
+      font-weight: 700;
+    }
+
+    /* EXPLORE */
+
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .explore-item {
+      border: 1px solid #dfeae7;
+      background: #ffffff;
+      border-radius: 15px;
+      min-height: 88px;
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      color: #23443a;
+    }
+
+    .explore-item .emoji {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e9f8f3;
+      font-size: 18px;
+    }
+
+    .explore-item span:last-child {
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .explore-item.my-opd {
+      background: linear-gradient(135deg, #0b8f6a, #067052);
+      color: white;
+      border: 0;
+    }
+
+    .explore-item.my-opd .emoji {
+      background: rgba(255,255,255,.18);
+    }
+
+    /* LIVE */
+
+    .live-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #e53935;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #e53935;
+      border-radius: 50%;
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .35;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* DOCTOR CARD */
+
+    .doctor-card {
+      background: #ffffff;
+      border: 1px solid #dfebe7;
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 5px 18px rgba(20, 70, 55, .05);
+    }
+
+    .doctor-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .doctor-avatar {
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+      border-radius: 15px;
+      background: #e9f8f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+    }
+
+    .doctor-info {
+      flex: 1;
+    }
+
+    .doctor-info h3 {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .doctor-info p {
+      font-size: 12px;
+      color: #74847f;
+    }
+
+    .available {
+      color: #087a5c;
+      background: #e9f8f3;
+      padding: 6px 8px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .unavailable {
+      color: #a33a3a;
+      background: #fdeeee;
+      padding: 6px 8px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .queue-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 13px;
+      background: #f5faf8;
+    }
+
+    .queue-label {
+      font-size: 11px;
+      color: #75837f;
+    }
+
+    .queue-number {
+      font-size: 23px;
+      font-weight: 800;
+      color: #0b8f6a;
+    }
+
+    .queue-waiting {
+      font-size: 12px;
+      color: #596c66;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      border: 0;
+      border-radius: 12px;
+      min-height: 42px;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: #0b8f6a;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e9f8f3;
+      color: #087a5c;
+    }
+
+    .btn-disabled {
+      background: #edf1f0;
+      color: #87938f;
+    }
+
+    /* MY OPD */
+
+    .my-opd-card {
+      background: linear-gradient(135deg, #0b8f6a, #067052);
+      color: white;
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 8px;
+      margin-bottom: 22px;
+    }
+
+    .my-opd-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .my-opd-label {
+      font-size: 12px;
+      opacity: .85;
+    }
+
+    .token {
+      font-size: 42px;
+      font-weight: 900;
+      margin-top: 5px;
+    }
+
+    .ahead {
+      text-align: right;
+    }
+
+    .ahead strong {
+      display: block;
+      font-size: 25px;
+    }
+
+    .ahead span {
+      font-size: 11px;
+      opacity: .8;
+    }
+
+    .my-opd-doctor {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid rgba(255,255,255,.2);
+      font-size: 13px;
+    }
+
+    .login-required {
+      background: #ffffff;
+      border: 1px dashed #a9c8be;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .login-required h3 {
+      margin-bottom: 6px;
+    }
+
+    .login-required p {
+      color: #75847f;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 13px;
+    }
+
+    /* SUPPORT */
+
+    .support-card {
+      background: #ffffff;
+      border: 1px solid #e0ebe8;
+      border-radius: 16px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+
+    .support-card h3 {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .support-card p {
+      font-size: 12px;
+      color: #74827e;
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 520px;
+      height: 70px;
+      background: rgba(255,255,255,.97);
+      border-top: 1px solid #dfe9e6;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 50;
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      color: #778580;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-item.active {
+      color: #0b8f6a;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 24px 24px 0 0;
+      padding: 22px;
+      animation: slideUp .2s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .close-btn {
+      width: 35px;
+      height: 35px;
+      border: 0;
+      border-radius: 50%;
+      background: #f1f5f3;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #eef5f2;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      border: 0;
+      padding: 10px;
+      background: transparent;
+      border-radius: 9px;
+      font-weight: 700;
+      color: #65756f;
+    }
+
+    .tab.active {
+      background: white;
+      color: #0b8f6a;
+      box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #d7e5e1;
+      border-radius: 12px;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #0b8f6a;
+    }
+
+    .full-btn {
+      width: 100%;
+      min-height: 47px;
+      border: 0;
+      border-radius: 13px;
+      background: #0b8f6a;
+      color: white;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 82px;
+      transform: translateX(-50%) translateY(20px);
+      width: calc(100% - 35px);
+      max-width: 480px;
+      background: #17332b;
+      color: white;
+      padding: 13px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 200;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* EMPTY */
+
+    .empty {
+      text-align: center;
+      background: white;
+      border: 1px dashed #cdded8;
+      border-radius: 17px;
+      padding: 25px 15px;
+      color: #77847f;
+      font-size: 13px;
+    }
+
+    @media (min-width: 521px) {
+      .bottom-nav {
+        border-left: 1px solid #dfe9e6;
+        border-right: 1px solid #dfe9e6;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-row">
+
+      <div>
+        <div class="brand">OPD LIVE</div>
+        <div class="subtitle">
+          Live OPD • Hospitals • Doctors
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" onclick="showToast('Notifications will be available soon.')">
+          🔔
+        </button>
+
+        <button class="icon-btn" onclick="openLogin()">
+          👤
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- MAIN -->
+  <main class="content">
+
+    <section class="welcome">
+      <h1>Find and track your OPD</h1>
+      <p>Healthcare made simple.</p>
+    </section>
+
+
+    <!-- SEARCH -->
+    <div class="search-box">
+      <span>🔎</span>
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search hospital, doctor or speciality"
+        oninput="searchAll()"
+      >
+    </div>
+
+
+    <!-- EXPLORE -->
+    <div class="section-title">
+      <h2>Explore</h2>
+    </div>
+
+    <div class="explore-grid">
+
+      <button
+        class="explore-item"
+        onclick="showToast('Hospital search selected.')"
+      >
+        <span class="emoji">🏥</span>
+        <span>Hospital</span>
+      </button>
+
+      <button
+        class="explore-item"
+        onclick="showToast('Specialisation selected.')"
+      >
+        <span class="emoji">🩺</span>
+        <span>Specialisation</span>
+      </button>
+
+      <button
+        class="explore-item"
+        onclick="showToast('Doctor search selected.')"
+      >
+        <span class="emoji">👨‍⚕️</span>
+        <span>Doctor</span>
+      </button>
+
+      <button
+        class="explore-item"
+        onclick="showToast('Emergency service selected.')"
+      >
+        <span class="emoji">🚨</span>
+        <span>Emergency</span>
+      </button>
+
+      <button
+        class="explore-item my-opd"
+        onclick="openMyOPD()"
+      >
+        <span class="emoji">🎫</span>
+        <span>My OPD</span>
+      </button>
+
+    </div>
+
+
+    <!-- MY OPD -->
+    <div class="section-title">
+      <h2>My OPD</h2>
+    </div>
+
+    <div id="myOpdContainer"></div>
+
+
+    <!-- LIVE OPD -->
+    <div class="section-title">
+
+      <div class="live-heading">
+        <h2>Live OPD</h2>
+
+        <span class="live-badge">
+          <span class="live-dot"></span>
+          LIVE
+        </span>
+      </div>
+
+      <button onclick="renderDoctors()">
+        View all
+      </button>
+
+    </div>
+
+    <div id="doctorList"></div>
+
+
+    <!-- SUPPORT -->
+    <div class="section-title" style="margin-top:24px;">
+      <h2>Need help?</h2>
+    </div>
+
+    <div class="support-card">
+      <h3>📞 OPD Support</h3>
+      <p>
+        For help with OPD numbers, queues or appointments,
+        contact the hospital reception.
+      </p>
+    </div>
+
+  </main>
+
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+
+    <button class="nav-item active">
+      <span class="nav-icon">⌂</span>
+      Home
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="scrollToLive()"
+    >
+      <span class="nav-icon">🔴</span>
+      Live
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="openMyOPD()"
+    >
+      <span class="nav-icon">🎫</span>
+      My OPD
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="openLogin()"
+    >
+      <span class="nav-icon">👤</span>
+      Profile
+    </button>
+
+  </nav>
+
+</div>
+
+
+<!-- LOGIN MODAL -->
+
+<div
+  id="loginModal"
+  class="modal"
+  onclick="closeModalOutside(event)"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <div>
+        <h2 id="modalTitle">Patient Login</h2>
+        <p style="font-size:12px;color:#78847f;margin-top:4px;">
+          Login to use My OPD
+        </p>
+      </div>
+
+      <button
+        class="close-btn"
+        onclick="closeLogin()"
+      >
+        ✕
+      </button>
+    </div>
+
+
+    <div class="tabs">
+
+      <button
+        id="loginTab"
+        class="tab active"
+        onclick="switchAuth('login')"
+      >
+        Login
+      </button>
+
+      <button
+        id="registerTab"
+        class="tab"
+        onclick="switchAuth('register')"
+      >
+        Register
+      </button>
+
+    </div>
+
+
+    <!-- LOGIN FORM -->
+
+    <form
+      id="loginForm"
+      onsubmit="handleLogin(event)"
+    >
+
+      <div class="field">
+        <label>Mobile Number</label>
+
+        <input
+          id="loginMobile"
+          type="tel"
+          inputmode="numeric"
+          placeholder="Enter mobile number"
+          required
+        >
+      </div>
+
+      <button class="full-btn">
+        Login
+      </button>
+
+    </form>
+
+
+    <!-- REGISTER FORM -->
+
+    <form
+      id="registerForm"
+      style="display:none;"
+      onsubmit="handleRegister(event)"
+    >
+
+      <div class="field">
+        <label>Full Name</label>
+
+        <input
+          id="registerName"
+          type="text"
+          placeholder="Enter your name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Mobile Number</label>
+
+        <input
+          id="registerMobile"
+          type="tel"
+          inputmode="numeric"
+          placeholder="Enter mobile number"
+          required
+        >
+      </div>
+
+      <button class="full-btn">
+        Create Patient Account
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast"></div>
+
+
+<!-- IMPORTANT: SHARED OPD LIVE LOGIC -->
+<script src="opd-live.js"></script>
+
+
+<script>
+
+  /* =========================================================
+     PATIENT APP
+     ========================================================= */
+
+  function escapeHTML(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  function renderDoctors(list) {
+
+    const container =
+      document.getElementById("doctorList");
+
+    if (!container) return;
+
+    const doctors =
+      list || OPDLive.getAllDoctors();
+
+    if (!doctors.length) {
+
+      container.innerHTML = `
+        <div class="empty">
+          No doctors found.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      doctors.map(doctor => {
+
+        const available =
+          doctor.available &&
+          doctor.opdOpen;
+
+        return `
+
+          <div class="doctor-card">
+
+            <div class="doctor-top">
+
+              <div class="doctor-avatar">
+                👨‍⚕️
+              </div>
+
+              <div class="doctor-info">
+
+                <h3>
+                  ${escapeHTML(doctor.name)}
+                </h3>
+
+                <p>
+                  ${escapeHTML(doctor.specialisation)}
+                </p>
+
+                <p>
+                  🏥 OPD LIVE Hospital
+                </p>
+
+              </div>
+
+              <div class="${available ? "available" : "unavailable"}">
+                ${available ? "AVAILABLE" : "NOT AVAILABLE"}
+              </div>
+
+            </div>
+
+
+            <div class="queue-box">
+
+              <div>
+                <div class="queue-label">
+                  Current OPD
+                </div>
+
+                <div class="queue-number">
+                  ${doctor.currentToken}
+                </div>
+              </div>
+
+              <div style="text-align:right;">
+                <div class="queue-label">
+                  Waiting
+                </div>
+
+                <div class="queue-waiting">
+                  ${doctor.waiting} patients
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-secondary"
+                onclick="viewDoctor('${doctor.id}')"
+              >
+                View Doctor
+              </button>
+
+              ${
+                available
+                ?
+                `
+                  <button
+                    class="btn btn-primary"
+                    onclick="joinDoctor('${doctor.id}')"
+                  >
+                    Join OPD
+                  </button>
+                `
+                :
+                `
+                  <button
+                    class="btn btn-disabled"
+                    disabled
+                  >
+                    OPD Closed
+                  </button>
+                `
+              }
+
+            </div>
+
+          </div>
+
+        `;
+
+      }).join("");
+  }
+
+
+  /* SEARCH */
+
+  function searchAll() {
+
+    const query =
+      document.getElementById("searchInput").value;
+
+    const doctors =
+      OPDLive.searchDoctors(query);
+
+    renderDoctors(doctors);
+  }
+
+
+  /* LOGIN */
+
+  function openLogin() {
+
+    document
+      .getElementById("loginModal")
+      .classList.add("show");
+
+  }
+
+
+  function closeLogin() {
+
+    document
+      .getElementById("loginModal")
+      .classList.remove("show");
+
+  }
+
+
+  function closeModalOutside(event) {
+
+    if (
+      event.target.id === "loginModal"
+    ) {
+      closeLogin();
+    }
+
+  }
+
+
+  function switchAuth(type) {
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const registerForm =
+      document.getElementById("registerForm");
+
+    const loginTab =
+      document.getElementById("loginTab");
+
+    const registerTab =
+      document.getElementById("registerTab");
+
+
+    if (type === "login") {
+
+      loginForm.style.display = "block";
+      registerForm.style.display = "none";
+
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+
+    } else {
+
+      loginForm.style.display = "none";
+      registerForm.style.display = "block";
+
+      loginTab.classList.remove("active");
+      registerTab.classList.add("active");
+
+    }
+
+  }
+
+
+  function handleLogin(event) {
+
+    event.preventDefault();
+
+    const mobile =
+      document.getElementById("loginMobile").value.trim();
+
+    const result =
+      OPDLive.loginPatient(mobile);
+
+    if (!result.success) {
+
+      showToast(result.message);
+      return;
+
+    }
+
+    closeLogin();
+
+    showToast(
+      "Welcome, " + result.patient.name
+    );
+
+    renderMyOPD();
+
+  }
+
+
+  function handleRegister(event) {
+
+    event.preventDefault();
+
+    const name =
+      document.getElementById("registerName").value.trim();
+
+    const mobile =
+      document.getElementById("registerMobile").value.trim();
+
+    const result =
+      OPDLive.registerPatient(name, mobile);
+
+    if (!result.success) {
+
+      showToast(result.message);
+      return;
+
+    }
+
+    closeLogin();
+
+    showToast(
+      "Account created successfully."
+    );
+
+    renderMyOPD();
+
+  }
+
+
+  /* MY OPD */
+
+  function renderMyOPD() {
+
+    const container =
+      document.getElementById("myOpdContainer");
+
+    const patient =
+      OPDLive.getCurrentPatient();
+
+    if (!patient) {
+
+      container.innerHTML = `
+
+        <div class="login-required">
+
+          <h3>
+            🎫 Track your OPD
+          </h3>
+
+          <p>
+            Login with your patient account to see
+            your OPD number, doctor and patients ahead.
+          </p>
+
+          <button
+            class="btn btn-primary"
+            style="width:100%;"
+            onclick="openLogin()"
+          >
+            Login / Register
+          </button>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    const myOPD =
+      OPDLive.getMyOPD();
+
+    if (!myOPD) {
+
+      container.innerHTML = `
+
+        <div class="login-required">
+
+          <h3>
+            No active OPD
+          </h3>
+
+          <p>
+            You are logged in as
+            <strong>${escapeHTML(patient.name)}</strong>.
+            Join an available doctor to get your OPD number.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML = `
+
+      <div class="my-opd-card">
+
+        <div class="my-opd-top">
+
+          <div>
+
+            <div class="my-opd-label">
+              YOUR OPD NUMBER
+            </div>
+
+            <div class="token">
+              #${myOPD.appointment.token}
+            </div>
+
+          </div>
+
+
+          <div class="ahead">
+
+            <strong>
+              ${myOPD.ahead}
+            </strong>
+
+            <span>
+              patients ahead
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="my-opd-doctor">
+
+          👨‍⚕️
+          ${escapeHTML(myOPD.doctor.name)}
+          •
+          ${escapeHTML(myOPD.doctor.specialisation)}
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  function openMyOPD() {
+
+    const patient =
+      OPDLive.getCurrentPatient();
+
+    if (!patient) {
+
+      openLogin();
+      return;
+
+    }
+
+    document
+      .getElementById("myOpdContainer")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  /* JOIN OPD */
+
+  function joinDoctor(doctorId) {
+
+    const patient =
+      OPDLive.getCurrentPatient();
+
+    if (!patient) {
+
+      showToast(
+        "Please login before joining an OPD."
+      );
+
+      openLogin();
+
+      return;
+    }
+
+
+    const result =
+      OPDLive.joinOPD(doctorId);
+
+    if (!result.success) {
+
+      showToast(result.message);
+      return;
+
+    }
+
+
+    showToast(
+      "OPD joined. Your number is #" +
+      result.appointment.token
+    );
+
+    renderDoctors();
+    renderMyOPD();
+
+    setTimeout(function () {
+
+      document
+        .getElementById("myOpdContainer")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }, 300);
+
+  }
+
+
+  /* VIEW DOCTOR */
+
+  function viewDoctor(doctorId) {
+
+    const doctor =
+      OPDLive.getDoctor(doctorId);
+
+    if (!doctor) return;
+
+    showToast(
+      doctor.name +
+      " • " +
+      doctor.specialisation +
+      " • Current OPD " +
+      doctor.currentToken
+    );
+
+  }
+
+
+  /* NAVIGATION */
+
+  function scrollToLive() {
+
+    const doctorList =
+      document.getElementById("doctorList");
+
+    doctorList.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  }
+
+
+  /* TOAST */
+
+  function showToast(message) {
+
+    const toast =
+      document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+      window.opdToastTimer
+    );
+
+    window.opdToastTimer =
+      setTimeout(function () {
+
+        toast.classList.remove("show");
+
+      }, 2800);
+
+  }
+
+
+  /* REAL-TIME PROTOTYPE SYNC */
+
+  window.addEventListener(
+    "opdLiveDatabaseUpdated",
+    function () {
+
+      renderDoctors();
+      renderMyOPD();
+
+    }
+  );
+
+
+  /* START */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+      renderDoctors();
+      renderMyOPD();
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
