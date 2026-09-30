@@ -541,4 +541,460 @@
 
     .support-text span {
       font-size: 10px;
-     
+      color: var(--muted);
+    }
+
+    /* BOTTOM NAV */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 9px 10px calc(9px + env(safe-area-inset-bottom));
+      z-index: 30;
+    }
+
+    .nav-item {
+      background: none;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.48);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 25px 25px 0 0;
+      padding: 22px;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-head h2 {
+      font-size: 20px;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #f0f4f3;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f0f4f3;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+
+    .auth-tab {
+      padding: 10px;
+      background: transparent;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 2px 7px rgba(0,0,0,.05);
+    }
+
+    .form-group {
+      margin-bottom: 13px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      height: 45px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 13px;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .full-btn {
+      width: 100%;
+      height: 47px;
+      border-radius: 13px;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 82px;
+      transform: translateX(-50%) translateY(20px);
+      background: #172321;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 200;
+      width: max-content;
+      max-width: calc(100% - 30px);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (min-width: 700px) {
+      body {
+        padding: 20px 0;
+      }
+
+      .app {
+        border-radius: 25px;
+        box-shadow: 0 15px 50px rgba(0,0,0,.08);
+        overflow: hidden;
+      }
+
+      .bottom-nav {
+        bottom: 20px;
+        border-radius: 20px;
+        width: min(520px, calc(100% - 30px));
+        border: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-row">
+
+        <div class="brand">
+          <div class="brand-logo">O</div>
+
+          <div>
+            <div class="brand-name">OPD LIVE</div>
+            <div class="brand-subtitle">
+              Live OPD • Hospitals • Doctors
+            </div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-button" onclick="showNotifications()">
+            🔔
+          </button>
+
+          <button class="icon-button" onclick="openLogin()">
+            👤
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- WELCOME -->
+      <section class="welcome">
+        <div class="welcome-small">
+          Find and track your OPD
+        </div>
+
+        <h1 class="welcome-title">
+          Healthcare made <span>simple.</span>
+        </h1>
+      </section>
+
+
+      <!-- SEARCH -->
+      <div class="search-box">
+        <span>⌕</span>
+
+        <input
+          type="search"
+          placeholder="Search hospital, doctor or speciality"
+          id="searchInput"
+          oninput="searchDoctors()"
+        />
+      </div>
+
+
+      <!-- FIVE MAIN OPTIONS -->
+      <section>
+        <div class="section-title">
+          Explore
+        </div>
+
+        <div class="quick-grid">
+
+          <button class="quick-item" onclick="showMessage('Hospital search')">
+            <div class="quick-icon">🏥</div>
+            <strong>Hospital</strong>
+          </button>
+
+          <button class="quick-item" onclick="showMessage('Specialisation search')">
+            <div class="quick-icon">✚</div>
+            <strong>Specialisation</strong>
+          </button>
+
+          <button class="quick-item" onclick="showMessage('Doctor search')">
+            <div class="quick-icon">👨‍⚕️</div>
+            <strong>Doctor</strong>
+          </button>
+
+          <button class="quick-item" onclick="showEmergency()">
+            <div class="quick-icon">🚑</div>
+            <strong>Emergency</strong>
+          </button>
+
+          <button class="quick-item my-opd" onclick="openMyOPD()">
+            <div class="quick-icon">🎫</div>
+            <strong>My OPD</strong>
+          </button>
+
+        </div>
+      </section>
+
+
+      <!-- MY OPD LOGIN CARD -->
+      <section id="myOpdSection" class="login-required">
+
+        <div class="login-icon">
+          🎫
+        </div>
+
+        <h3>My OPD Number</h3>
+
+        <p>
+          Login or register to join an OPD, track your queue
+          and receive live notifications.
+        </p>
+
+        <button class="primary-btn" style="padding:0 20px;" onclick="openLogin()">
+          Login / Register
+        </button>
+
+      </section>
+
+
+      <!-- LIVE DOCTORS -->
+      <section class="live-section">
+
+        <div class="section-heading-row">
+
+          <div>
+            <div class="section-title" style="margin-bottom:3px;">
+              Live OPD
+            </div>
+
+            <div class="live-label">
+              <span class="live-dot"></span>
+              LIVE NOW
+            </div>
+          </div>
+
+          <button class="view-all" onclick="showMessage('Showing all doctors')">
+            View all
+          </button>
+
+        </div>
+
+
+        <!-- DOCTOR 1 -->
+        <article class="doctor-card" data-search="dr amit sharma cardiologist city care hospital">
+
+          <div class="doctor-top">
+
+            <div class="doctor-avatar">
+              AS
+            </div>
+
+            <div class="doctor-info">
+
+              <div class="doctor-name">
+                Dr. Amit Sharma
+              </div>
+
+              <div class="doctor-specialization">
+                Cardiologist
+              </div>
+
+              <div class="hospital-name">
+                City Care Hospital
+              </div>
+
+            </div>
+
+            <div class="availability">
+              <span class="availability-dot"></span>
+              Available
+            </div>
+
+          </div>
+
+
+          <div class="queue-box">
+
+            <div class="queue-item">
+              <small>Current OPD</small>
+              <div class="queue-number">17</div>
+            </div>
+
+            <div class="queue-item">
+              <small>OPD Status</small>
+              <div class="queue-status">
+                ● LIVE
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="doctor-actions">
+
+            <button class="secondary-btn"
+              onclick="openDoctor('Dr. Amit Sharma')">
+              View Doctor
+            </button>
+
+            <button class="primary-btn"
+              onclick="joinOPD('Dr. Amit Sharma')">
+              Join OPD
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- DOCTOR 2 -->
+        <article class="doctor-card" data-search="dr priya verma physician sunrise hospital">
+
+          <div class="doctor-top">
+
+            <div class="doctor-avatar">
+              PV
+            </div>
+
+            <div class="doctor-info">
+
+              <div class="doctor-name">
+                Dr. Priya Verma
+              </div>
+
+              <div class="doctor-specialization">
+                Physician
+              </div>
+
+              <div class="hospital-name">
+                Sunrise Hospital
+              </div>
+
+            </div>
+
+            <div class="availability">
+              <span class="availability-dot"></span>
+              Available
+            </div>
+
+          </div>
+
+
+          <div class="queue-box">
+
+            <div class="queue-item">
+              <small>Current OPD</small>
+              <div class="queue-number">09</div>
+            </div>
+
+            <div class="queue-item">
+              <small>OPD Status</small>
+              <div class="queue-status">
+                ● LIVE
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="doctor-actions">
+
+            <button class="secondary-btn"
+              onclick="openDoctor('Dr. Priya Verma')">
+              View Doctor
+            </button>
+
+            <button class="primary-btn"
+              onclick="joinOPD
