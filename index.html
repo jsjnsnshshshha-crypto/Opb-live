@@ -997,6 +997,531 @@
             </button>
 
             <button class="primary-btn"
-              onclick="joinOPD
+              onclick="joinOPd
+              <script>
+/* ================================
+   OPD LIVE - PATIENT APP WORKING
+================================ */
+
+let currentUser = null;
+
+/* ---------- TOAST MESSAGE ---------- */
+
+function showMessage(message) {
+  const toast = document.getElementById("toast");
+
+  if (!toast) {
+    alert(message);
+    return;
+  }
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+
+/* ---------- NOTIFICATIONS ---------- */
+
+function showNotifications() {
+  showMessage("No new notifications");
+}
+
+
+/* ---------- LOGIN ---------- */
+
+function openLogin() {
+  const modal = document.getElementById("authModal");
+
+  if (modal) {
+    modal.classList.add("show");
+  }
+}
+
+
+/* ---------- CLOSE LOGIN ---------- */
+
+function closeLogin() {
+  const modal = document.getElementById("authModal");
+
+  if (modal) {
+    modal.classList.remove("show");
+  }
+}
+
+
+/* ---------- LOGIN / REGISTER TABS ---------- */
+
+function switchAuth(type) {
+  const loginTab = document.getElementById("loginTab");
+  const registerTab = document.getElementById("registerTab");
+
+  const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
+
+  if (!loginTab || !registerTab || !loginForm || !registerForm) {
+    return;
+  }
+
+  if (type === "login") {
+    loginTab.classList.add("active");
+    registerTab.classList.remove("active");
+
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
+  } else {
+    registerTab.classList.add("active");
+    loginTab.classList.remove("active");
+
+    registerForm.style.display = "block";
+    loginForm.style.display = "none";
+  }
+}
+
+
+/* ---------- LOGIN ---------- */
+
+function loginPatient(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("loginEmail");
+  const password = document.getElementById("loginPassword");
+
+  if (!email || !password) {
+    return;
+  }
+
+  if (!email.value.trim() || !password.value.trim()) {
+    showMessage("Please enter email and password");
+    return;
+  }
+
+  currentUser = {
+    email: email.value.trim()
+  };
+
+  localStorage.setItem(
+    "opdLiveUser",
+    JSON.stringify(currentUser)
+  );
+
+  closeLogin();
+
+  updatePatientUI();
+
+  showMessage("Login successful");
+}
+
+
+/* ---------- REGISTER ---------- */
+
+function registerPatient(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("registerName");
+  const email = document.getElementById("registerEmail");
+  const password = document.getElementById("registerPassword");
+
+  if (!name || !email || !password) {
+    return;
+  }
+
+  if (
+    !name.value.trim() ||
+    !email.value.trim() ||
+    !password.value.trim()
+  ) {
+    showMessage("Please fill all details");
+    return;
+  }
+
+  currentUser = {
+    name: name.value.trim(),
+    email: email.value.trim()
+  };
+
+  localStorage.setItem(
+    "opdLiveUser",
+    JSON.stringify(currentUser)
+  );
+
+  closeLogin();
+
+  updatePatientUI();
+
+  showMessage("Registration successful");
+}
+
+
+/* ---------- MY OPD ---------- */
+
+function openMyOPD() {
+
+  if (!currentUser) {
+    openLogin();
+    return;
+  }
+
+  const section = document.getElementById("myOpdSection");
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+  showMessage("Opening your OPD");
+}
+
+
+/* ---------- EMERGENCY ---------- */
+
+function showEmergency() {
+
+  const emergency = confirm(
+    "Emergency service\n\n" +
+    "For a serious emergency, please contact your local emergency service or visit the nearest hospital.\n\n" +
+    "Do you want to find emergency hospitals?"
+  );
+
+  if (emergency) {
+    showMessage("Emergency hospital search opened");
+  }
+}
+
+
+/* ---------- DOCTOR DETAILS ---------- */
+
+function openDoctor(doctorName) {
+
+  showMessage("Opening " + doctorName);
+
+  setTimeout(() => {
+
+    alert(
+      doctorName +
+      "\n\nDoctor profile will show:\n" +
+      "• Specialisation\n" +
+      "• Hospital\n" +
+      "• OPD timing\n" +
+      "• Current queue\n" +
+      "• Availability"
+    );
+
+  }, 300);
+}
+
+
+/* ---------- JOIN OPD ---------- */
+
+function joinOPD(doctorName) {
+
+  if (!currentUser) {
+    showMessage("Please login to join OPD");
+
+    setTimeout(() => {
+      openLogin();
+    }, 500);
+
+    return;
+  }
+
+  const confirmJoin = confirm(
+    "Join OPD\n\n" +
+    doctorName +
+    "\n\nDo you want to join this OPD?"
+  );
+
+  if (!confirmJoin) {
+    return;
+  }
+
+  localStorage.setItem(
+    "opdLiveJoinedDoctor",
+    doctorName
+  );
+
+  localStorage.setItem(
+    "opdLiveToken",
+    "A-18"
+  );
+
+  showMessage(
+    "OPD joined successfully. Your token is A-18"
+  );
+
+  setTimeout(() => {
+    updateMyOPDCard();
+  }, 500);
+}
+
+
+/* ---------- SEARCH ---------- */
+
+function searchDoctors() {
+
+  const input = document.getElementById("searchInput");
+
+  if (!input) {
+    return;
+  }
+
+  const searchText =
+    input.value.toLowerCase().trim();
+
+  const cards =
+    document.querySelectorAll(".doctor-card");
+
+  cards.forEach(card => {
+
+    const searchableText =
+      card.getAttribute("data-search") || "";
+
+    if (
+      searchText === "" ||
+      searchableText
+        .toLowerCase()
+        .includes(searchText)
+    ) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+}
+
+
+/* ---------- VIEW ALL ---------- */
+
+function showAllDoctors() {
+
+  const cards =
+    document.querySelectorAll(".doctor-card");
+
+  cards.forEach(card => {
+    card.style.display = "";
+  });
+
+  const input =
+    document.getElementById("searchInput");
+
+  if (input) {
+    input.value = "";
+  }
+
+  showMessage("Showing all doctors");
+}
+
+
+/* ---------- UPDATE PATIENT UI ---------- */
+
+function updatePatientUI() {
+
+  const loginButton =
+    document.querySelector(
+      ".header-actions .icon-button:last-child"
+    );
+
+  if (loginButton && currentUser) {
+    loginButton.textContent = "✓";
+    loginButton.title = "Logged in";
+  }
+
+  updateMyOPDCard();
+}
+
+
+/* ---------- UPDATE MY OPD ---------- */
+
+function updateMyOPDCard() {
+
+  const section =
+    document.getElementById("myOpdSection");
+
+  if (!section) {
+    return;
+  }
+
+  const token =
+    localStorage.getItem("opdLiveToken");
+
+  const doctor =
+    localStorage.getItem("opdLiveJoinedDoctor");
+
+  if (currentUser && token) {
+
+    section.className = "my-opd-card";
+
+    section.innerHTML = `
+      <div class="my-opd-header">
+        <div class="my-opd-title">
+          MY OPD
+        </div>
+
+        <div>
+          LIVE
+        </div>
+      </div>
+
+      <div class="my-opd-main">
+
+        <div>
+          <div class="my-number">
+            ${token}
+          </div>
+
+          <div class="my-number-label">
+            Your OPD Token
+          </div>
+        </div>
+
+        <div class="ahead">
+          <strong>12</strong>
+          <small>patients ahead</small>
+        </div>
+
+      </div>
+
+      <div style="
+        margin-top:14px;
+        font-size:11px;
+        opacity:.9;
+      ">
+        ${doctor || "OPD joined"}
+      </div>
+    `;
+
+  } else {
+
+    section.className = "login-required";
+
+    section.innerHTML = `
+      <div class="login-icon">
+        🎫
+      </div>
+
+      <h3>
+        My OPD Number
+      </h3>
+
+      <p>
+        Login or register to join an OPD,
+        track your queue and receive live
+        notifications.
+      </p>
+
+      <button
+        class="primary-btn"
+        style="padding:0 20px;"
+        onclick="openLogin()"
+      >
+        Login / Register
+      </button>
+    `;
+  }
+}
+
+
+/* ---------- BOTTOM NAVIGATION ---------- */
+
+function navigateTo(page) {
+
+  if (page === "home") {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    return;
+  }
+
+  if (page === "search") {
+
+    const input =
+      document.getElementById("searchInput");
+
+    if (input) {
+
+      input.focus();
+
+      input.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+    return;
+  }
+
+  if (page === "opd") {
+
+    openMyOPD();
+
+    return;
+  }
+
+  if (page === "profile") {
+
+    if (currentUser) {
+      showMessage("Patient profile");
+    } else {
+      openLogin();
+    }
+
+    return;
+  }
+
+}
+
+
+/* ---------- LOAD SAVED LOGIN ---------- */
+
+function loadPatient() {
+
+  const savedUser =
+    localStorage.getItem("opdLiveUser");
+
+  if (savedUser) {
+
+    try {
+
+      currentUser =
+        JSON.parse(savedUser);
+
+      updatePatientUI();
+
+    } catch (error) {
+
+      localStorage.removeItem(
+        "opdLiveUser"
+      );
+
+    }
+
+  }
+}
+
+
+/* ---------- START APP ---------- */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+
+    loadPatient();
+
+  }
+);
+</script>
+              
 
               
